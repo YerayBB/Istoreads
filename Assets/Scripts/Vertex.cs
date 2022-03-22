@@ -19,6 +19,8 @@ namespace Istoreads
         private void Awake()
         {
             _transform = transform;
+            Debug.Log($"Vertex Awaken {gameObject.GetInstanceID()}");
+            //gameObject.SetActive(false);
         }
 
         private void FixedUpdate()
@@ -48,10 +50,11 @@ namespace Istoreads
             gameObject.SetActive(true);
         }
 
-        public void Reatach(Vector3 pos, Transform parent)
+        public void Reatach(Vector3 pos, int number, Transform parent)
         {
             _transform.parent = parent;
             _finalPos = pos;
+            _number = number;
         }
 
         private void Death()

@@ -17,5 +17,10 @@ namespace Istoreads
         {
 
         }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            Debug.Log($"Bump {collision.gameObject.name}");
+        }
     }
 }

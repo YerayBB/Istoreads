@@ -264,19 +264,21 @@ namespace Istoreads
             }
             for (int i = 0; i < _vertexAmount; ++i)
             {
-                vertexPos = new Vector3(Mathf.Cos(angle * i) * _radius, Mathf.Sin(angle * i) * _radius);
-                if(subIndex >= vertexs.Length)
+                if (subIndex >= vertexs.Length)
                 {
                     Debug.Log("Error in split, Transform array incomplete");
+                    return;
                 }
-                while(vertexs[subIndex] == null && subIndex < vertexs.Length)
-                {
-                    ++subIndex;
-                }
+                vertexPos = new Vector3(Mathf.Cos(angle * i) * _radius, Mathf.Sin(angle * i) * _radius);
+
                 vertex = vertexs[subIndex].GetComponent<Vertex>();
                 vertex.OnKilled += DisableVertex;
                 vertex.Reatach(vertexPos, i, _transform);
                 ++subIndex;
+                while (vertexs[subIndex] == null && subIndex < vertexs.Length)
+                {
+                    ++subIndex;
+                }
             }
             gameObject.SetActive(true);
         }

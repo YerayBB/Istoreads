@@ -9,12 +9,17 @@ namespace Istoreads
         public static Spawner Instance { get; private set; }
 
         [SerializeField]
+        private int _vertexPoolInitCapacity;
+        [SerializeField]
+        private int _polygonPoolInitCapacity;
+
+        [SerializeField]
         private GameObject _vertexPrefab;
         [SerializeField]
         private GameObject _polygonPrefab;
 
-        private Stack<Vertex> _vertexPool;
-        private Stack<Polygon> _polygonPool;
+        private Stack<Vertex> _vertexPool = new Stack<Vertex>();
+        private Stack<Polygon> _polygonPool = new Stack<Polygon>();
 
         private void Awake()
         {
@@ -27,6 +32,8 @@ namespace Istoreads
                 Destroy(this);
             }
 
+            for (int i = 0; i < _vertexPoolInitCapacity; ++i) PoolVertex();
+            for (int i = 0; i < _polygonPoolInitCapacity; ++i) PoolPolygon();
 
         }
 
