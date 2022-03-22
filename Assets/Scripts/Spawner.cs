@@ -6,6 +6,30 @@ namespace Istoreads
 {
     public class Spawner : MonoBehaviour
     {
+        public static Spawner Instance { get; private set; }
+
+        [SerializeField]
+        private GameObject _vertexPrefab;
+        [SerializeField]
+        private GameObject _polygonPrefab;
+
+        private Stack<Vertex> _vertexPool;
+        private Stack<Polygon> _polygonPool;
+
+        private void Awake()
+        {
+            if(Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(this);
+            }
+
+
+        }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -16,6 +40,38 @@ namespace Istoreads
         void Update()
         {
 
+        }
+
+        public Vertex GetVertex()
+        {
+            if (_vertexPool.Count <= 0)
+            {
+                SpawnVertex();
+            }
+            return _vertexPool.Pop();
+        }
+
+        private void SpawnVertex()
+        {
+            GameObject spawn = Instantiate(_vertexPrefab);
+            spawn.SetActive(false);
+            _vertexPool.Push(spawn.GetComponent<Vertex>());
+        }
+
+        public Polygon GetPolygon()
+        {
+            if (_polygonPool.Count <= 0)
+            {
+                SpawnPolygon();
+            }
+            return _polygonPool.Pop();
+        }
+
+        private void SpawnPolygon()
+        {
+            GameObject spawn = Instantiate(_polygonPrefab);
+            spawn.SetActive(false);
+            _polygonPool.Push(spawn.GetComponent<Polygon>());
         }
     }
 }
