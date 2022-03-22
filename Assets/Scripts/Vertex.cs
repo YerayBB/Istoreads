@@ -8,7 +8,7 @@ namespace Istoreads
     {
         private int _number;
 
-        public static System.Action OnDestroyed;
+        public static event System.Action OnDestroyed;
 
         public event System.Action<int> OnKilled = null;
 
@@ -26,8 +26,16 @@ namespace Istoreads
             if(_finalPos != null)
             {
                 Vector3 dir = (Vector3)_finalPos - _transform.localPosition;
-                if (dir.magnitude > 1) dir.Normalize();
-                _transform.localPosition += dir;
+                if (dir.magnitude > 1)
+                {
+                    dir.Normalize();
+                    _transform.localPosition += dir;
+                }
+                else
+                {
+                    _transform.localPosition = (Vector3)_finalPos;
+                    _finalPos = null;
+                }
             }
         }
 
