@@ -46,12 +46,12 @@ namespace Istoreads
         {
             if (_vertexPool.Count <= 0)
             {
-                SpawnVertex();
+                PoolVertex();
             }
             return _vertexPool.Pop();
         }
 
-        private void SpawnVertex()
+        private void PoolVertex()
         {
             GameObject spawn = Instantiate(_vertexPrefab);
             spawn.SetActive(false);
@@ -62,12 +62,12 @@ namespace Istoreads
         {
             if (_polygonPool.Count <= 0)
             {
-                SpawnPolygon();
+                PoolPolygon();
             }
             return _polygonPool.Pop();
         }
 
-        private void SpawnPolygon()
+        private void PoolPolygon()
         {
             GameObject spawn = Instantiate(_polygonPrefab);
             spawn.SetActive(false);
