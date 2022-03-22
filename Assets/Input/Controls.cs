@@ -138,7 +138,7 @@ namespace Istoreads
                     ""id"": ""61ca49e8-4c1b-4f6a-925c-7091103a9f38"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Clamp(min=-0.5,max=0.5)"",
                     ""groups"": """",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
