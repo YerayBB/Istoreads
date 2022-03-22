@@ -23,6 +23,8 @@ namespace Istoreads
             _transform = transform;
             _lineRenderer = GetComponent<LineRenderer>();
             _polygonCollider = GetComponent<PolygonCollider2D>();
+            Debug.Log($"Polygon Awaken {gameObject.GetInstanceID()}");
+            //gameObject.SetActive(false);
         }
 
         // Start is called before the first frame update
@@ -256,7 +258,11 @@ namespace Istoreads
             Vector3 vertexPos;
             Vertex vertex;
             int subIndex = 0;
-            for (int i = 0; i < vertexs.Length; ++i)
+            while (vertexs[subIndex] == null && subIndex < vertexs.Length)
+            {
+                ++subIndex;
+            }
+            for (int i = 0; i < _vertexAmount; ++i)
             {
                 vertexPos = new Vector3(Mathf.Cos(angle * i) * _radius, Mathf.Sin(angle * i) * _radius);
                 if(subIndex >= vertexs.Length)
@@ -269,7 +275,8 @@ namespace Istoreads
                 }
                 vertex = vertexs[subIndex].GetComponent<Vertex>();
                 vertex.OnKilled += DisableVertex;
-                vertex.Reatach(vertexPos, _transform);
+                vertex.Reatach(vertexPos, i, _transform);
+                ++subIndex;
             }
             gameObject.SetActive(true);
         }
