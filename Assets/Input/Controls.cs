@@ -64,6 +64,15 @@ namespace Istoreads
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""98961e05-bf12-4976-9433-15a11e14a636"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": ""Clamp(min=-0.5,max=0.5)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -81,7 +90,7 @@ namespace Istoreads
                 {
                     ""name"": ""negative"",
                     ""id"": ""cff86138-5219-4d78-9388-f106689d133b"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -92,7 +101,7 @@ namespace Istoreads
                 {
                     ""name"": ""positive"",
                     ""id"": ""3805e977-2a45-4ddf-8745-01571550e056"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -114,7 +123,7 @@ namespace Istoreads
                 {
                     ""name"": ""negative"",
                     ""id"": ""5a811c27-336d-45c3-93a5-d341b3ce57b7"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -125,24 +134,13 @@ namespace Istoreads
                 {
                     ""name"": ""positive"",
                     ""id"": ""a737f3f9-09fb-4c49-a199-2e283598ce03"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""61ca49e8-4c1b-4f6a-925c-7091103a9f38"",
-                    ""path"": ""<Mouse>/scroll/y"",
-                    ""interactions"": """",
-                    ""processors"": ""Clamp(min=-0.5,max=0.5)"",
-                    ""groups"": """",
-                    ""action"": ""Rotate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -231,6 +229,17 @@ namespace Istoreads
                     ""action"": ""Shot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7463f0d2-69fc-4d1c-9a63-92d9cd0cb963"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -243,6 +252,7 @@ namespace Istoreads
             m_Player_Thrust = m_Player.FindAction("Thrust", throwIfNotFound: true);
             m_Player_Stop = m_Player.FindAction("Stop", throwIfNotFound: true);
             m_Player_Shot = m_Player.FindAction("Shot", throwIfNotFound: true);
+            m_Player_RotateMouse = m_Player.FindAction("RotateMouse", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -306,6 +316,7 @@ namespace Istoreads
         private readonly InputAction m_Player_Thrust;
         private readonly InputAction m_Player_Stop;
         private readonly InputAction m_Player_Shot;
+        private readonly InputAction m_Player_RotateMouse;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
@@ -314,6 +325,7 @@ namespace Istoreads
             public InputAction @Thrust => m_Wrapper.m_Player_Thrust;
             public InputAction @Stop => m_Wrapper.m_Player_Stop;
             public InputAction @Shot => m_Wrapper.m_Player_Shot;
+            public InputAction @RotateMouse => m_Wrapper.m_Player_RotateMouse;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -335,6 +347,9 @@ namespace Istoreads
                     @Shot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShot;
                     @Shot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShot;
                     @Shot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShot;
+                    @RotateMouse.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateMouse;
+                    @RotateMouse.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateMouse;
+                    @RotateMouse.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateMouse;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -351,6 +366,9 @@ namespace Istoreads
                     @Shot.started += instance.OnShot;
                     @Shot.performed += instance.OnShot;
                     @Shot.canceled += instance.OnShot;
+                    @RotateMouse.started += instance.OnRotateMouse;
+                    @RotateMouse.performed += instance.OnRotateMouse;
+                    @RotateMouse.canceled += instance.OnRotateMouse;
                 }
             }
         }
@@ -361,6 +379,7 @@ namespace Istoreads
             void OnThrust(InputAction.CallbackContext context);
             void OnStop(InputAction.CallbackContext context);
             void OnShot(InputAction.CallbackContext context);
+            void OnRotateMouse(InputAction.CallbackContext context);
         }
     }
 }

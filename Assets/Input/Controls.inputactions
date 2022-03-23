@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "RotateMouse",
+                    "type": "Button",
+                    "id": "98961e05-bf12-4976-9433-15a11e14a636",
+                    "expectedControlType": "Button",
+                    "processors": "Clamp(min=-0.5,max=0.5)",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -57,7 +66,7 @@
                 {
                     "name": "negative",
                     "id": "cff86138-5219-4d78-9388-f106689d133b",
-                    "path": "<Keyboard>/leftArrow",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -68,7 +77,7 @@
                 {
                     "name": "positive",
                     "id": "3805e977-2a45-4ddf-8745-01571550e056",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -90,7 +99,7 @@
                 {
                     "name": "negative",
                     "id": "5a811c27-336d-45c3-93a5-d341b3ce57b7",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -101,24 +110,13 @@
                 {
                     "name": "positive",
                     "id": "a737f3f9-09fb-4c49-a199-2e283598ce03",
-                    "path": "<Keyboard>/d",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "61ca49e8-4c1b-4f6a-925c-7091103a9f38",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "Clamp(min=-0.5,max=0.5)",
-                    "groups": "",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -205,6 +203,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7463f0d2-69fc-4d1c-9a63-92d9cd0cb963",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
