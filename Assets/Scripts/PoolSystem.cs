@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Istoreads
 {
-    public class Spawner : MonoBehaviour
+    public class PoolSystem : MonoBehaviour
     {
-        public static Spawner Instance { get; private set; }
+        public static PoolSystem Instance { get; private set; }
 
         [SerializeField]
         private int _vertexPoolInitCapacity;
@@ -17,9 +17,14 @@ namespace Istoreads
         private GameObject _vertexPrefab;
         [SerializeField]
         private GameObject _polygonPrefab;
+        [SerializeField]
+        private GameObject _bulletPrefab;
 
         private Stack<Vertex> _vertexPool = new Stack<Vertex>();
         private Stack<Polygon> _polygonPool = new Stack<Polygon>();
+        private Stack<Bullet> _bulletPool = new Stack<Bullet>();
+
+        private List<Bullet> _activeBullets = new List<Bullet>();
 
         private void Awake()
         {
@@ -35,12 +40,20 @@ namespace Istoreads
             for (int i = 0; i < _vertexPoolInitCapacity; ++i) PoolVertex();
             for (int i = 0; i < _polygonPoolInitCapacity; ++i) PoolPolygon();
 
+            for (int i = 0; i < _polygonPoolInitCapacity; ++i) PoolBullet();
+
         }
 
         // Start is called before the first frame update
         void Start()
         {
-
+            Vertex.OnDestroyed += (vertex) => _vertexPool.Push(vertex);
+            Polygon.OnDestroyed += (polygon) => _polygonPool.Push(polygon);
+            Bullet.OnDestroyed += (bullet) =>
+            {
+                _activeBullets.Remove(bullet);
+                _bulletPool.Push(bullet);
+            };
         }
 
         // Update is called once per frame
@@ -79,6 +92,31 @@ namespace Istoreads
             GameObject spawn = Instantiate(_polygonPrefab);
             spawn.SetActive(false);
             _polygonPool.Push(spawn.GetComponent<Polygon>());
+        }
+
+        public Bullet GetBullet()
+        {
+            Bullet ret;
+            if (_bulletPool.Count <= 0)
+            {
+                ret = _bulletPool.Pop();
+
+            }
+            else
+            {
+                ret = _activeBullets[0];
+                _activeBullets.RemoveAt(0);
+            }
+            _activeBullets.Add(ret);
+            return ret;
+
+        }
+
+        private void PoolBullet()
+        {
+            GameObject spawn = Instantiate(_bulletPrefab);
+            spawn.SetActive(false);
+            _bulletPool.Push(spawn.GetComponent<Bullet>());
         }
     }
 }

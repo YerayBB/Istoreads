@@ -8,7 +8,7 @@ namespace Istoreads
     {
         private int _number;
 
-        public static event System.Action OnDestroyed;
+        public static event System.Action<Vertex> OnDestroyed;
 
         public event System.Action<int> OnKilled = null;
 

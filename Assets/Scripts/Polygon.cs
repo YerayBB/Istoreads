@@ -15,7 +15,7 @@ namespace Istoreads
         private float _radius;
         private bool[] _atachedVertex;
 
-        public static event System.Action OnDestroyed;
+        public static event System.Action<Polygon> OnDestroyed;
 
 
         private void Awake()
@@ -63,7 +63,7 @@ namespace Istoreads
             for(int i = 0; i < _vertexAmount; ++i)
             {
                 vertexPos = new Vector3(Mathf.Cos(angle * i) * _radius, Mathf.Sin(angle * i) * _radius);
-                vertex = Spawner.Instance.GetVertex();
+                vertex = PoolSystem.Instance.GetVertex();
                 vertex.OnKilled += DisableVertex;
                 _atachedVertex[i] = true;
                 vertex.Initialize(vertexPos, i, _transform);
@@ -242,7 +242,7 @@ namespace Istoreads
                             }
                         }
                     }
-                    Spawner.Instance.GetPolygon().Split(amount, vertexs, _radius);
+                    PoolSystem.Instance.GetPolygon().Split(amount, vertexs, _radius);
 
                 }
             }
