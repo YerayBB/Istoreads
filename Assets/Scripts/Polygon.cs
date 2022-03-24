@@ -14,6 +14,7 @@ namespace Istoreads
         private int _vertexAmount;
         private float _radius;
         private bool[] _atachedVertex;
+        private bool _init = false;
 
         public static event System.Action<Polygon> OnDestroyed;
 
@@ -35,14 +36,17 @@ namespace Istoreads
 
         private void Update()
         {
-            Vector2[] path = new Vector2[_vertexAmount];
-            _lineRenderer.positionCount = _vertexAmount;
-            for(int i = 0; i < _vertexAmount; ++i)
+            if (_init)
             {
-                path[i] = _transform.GetChild(i).localPosition;
-                _lineRenderer.SetPosition(i, path[i]);
+                Vector2[] path = new Vector2[_vertexAmount];
+                _lineRenderer.positionCount = _vertexAmount;
+                for (int i = 0; i < _vertexAmount; ++i)
+                {
+                    path[i] = _transform.GetChild(i).localPosition;
+                    _lineRenderer.SetPosition(i, path[i]);
+                }
+                _polygonCollider.SetPath(0, path);
             }
-            _polygonCollider.SetPath(0, path);
         }
 
         private void FixedUpdate()
@@ -52,6 +56,7 @@ namespace Istoreads
 
         public void Initialize(int vertexAmount, Vector3 position, float radius)
         {
+            _init = false;
             _initialVertex = vertexAmount;
             _vertexAmount = vertexAmount;
             _atachedVertex = new bool[_initialVertex];
@@ -69,6 +74,7 @@ namespace Istoreads
                 vertex.Initialize(vertexPos, i, _transform);
             }
             gameObject.SetActive(true);
+            _init = true;
         }
 
         private void DisableVertex(int vertexID)
@@ -271,6 +277,7 @@ namespace Istoreads
 
         public void Split(int amount, Transform[] vertexs, float radius)
         {
+            _init = false;
             _initialVertex = amount;
             _vertexAmount = _initialVertex;
             _atachedVertex = new bool[_initialVertex];
@@ -303,10 +310,12 @@ namespace Istoreads
                 _atachedVertex[i] = true;
             }
             gameObject.SetActive(true);
+            _init = true;
         }
 
         private void Death()
         {
+            _init = false;
             gameObject.SetActive(false);
             OnDestroyed?.Invoke(this);
         }

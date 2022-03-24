@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2548352406727000540}
   - component: {fileID: 4077975667389105529}
   - component: {fileID: 8759768444147757380}
+  - component: {fileID: 1578151290952236643}
   m_Layer: 7
   m_Name: Polygon
   m_TagString: Untagged
@@ -167,3 +168,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcf388aeb12448940aff6601b5ce06c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &1578151290952236643
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2548352406727000543}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -266,6 +266,49 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &965212225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 965212227}
+  - component: {fileID: 965212226}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &965212226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965212225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 726880ca6e1635c46b84619813889e41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &965212227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965212225}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1145654063
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +782,6 @@ GameObject:
   - component: {fileID: 2123329510}
   - component: {fileID: 2123329509}
   - component: {fileID: 2123329508}
-  - component: {fileID: 2123329513}
   m_Layer: 6
   m_Name: Ship
   m_TagString: Untagged
@@ -808,7 +850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _thrustSpeed: 10
   _rotationtSpeed: 0.5
-  _bulletSpeed: 1
+  _bulletSpeed: 100
 --- !u!212 &2123329511
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -874,18 +916,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2123329513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2123329507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f41a590fb3bb87b44898ff4be2aa2c6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _thrustSpeed: 1
-  _rotationtSpeed: 1
-  _bulletSpeed: 1
