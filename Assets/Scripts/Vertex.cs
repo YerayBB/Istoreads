@@ -65,5 +65,11 @@ namespace Istoreads
             OnKilled = null;
             OnDestroyed?.Invoke(this);
         }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            Debug.Log($"Death by collision with: " + collision.gameObject.name);
+            Death();
+        }
     }
 }

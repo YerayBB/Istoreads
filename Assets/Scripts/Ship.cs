@@ -59,7 +59,7 @@ namespace Istoreads
 
         private void Rotate(float dir)
         {
-            Debug.Log("Rotate");
+            //Debug.Log("Rotate");
             _rigidBody.AddTorque(dir * _rotationtSpeed);
         }
 

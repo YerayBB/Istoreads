@@ -23,7 +23,7 @@ namespace Istoreads
             _transform = transform;
             _lineRenderer = GetComponent<LineRenderer>();
             _polygonCollider = GetComponent<PolygonCollider2D>();
-            Debug.Log($"Polygon Awaken {gameObject.GetInstanceID()}");
+            //Debug.Log($"Polygon Awaken {gameObject.GetInstanceID()}");
             //gameObject.SetActive(false);
         }
 
@@ -98,8 +98,7 @@ namespace Istoreads
                     {
                         if (start != -1)
                         {
-                            fragments.Add(new Vector2Int(start, i));
-                            start = -1;
+
                         }
                         else
                         {
@@ -110,13 +109,25 @@ namespace Istoreads
                     {
                         if (start != -1)
                         {
-                            fragments.Add(new Vector2Int(start, start));
+                            fragments.Add(new Vector2Int(start, i-1));
                             start = -1;
+                        }
+                        else
+                        {
+                            
                         }
                     }
                 }
+                //case last vertex = limit
+                if (start != -1)
+                {
+                    fragments.Add(new Vector2Int(start, _initialVertex -1));
+                    start = -1;
+                }
+                //Debug.Log("Create fragments");
+                //UtilsUnknown.Debugging<Vector2Int>.List(fragments);
                 //check last and first are connected
-                if(fragments.Count > 1)
+                if (fragments.Count > 1)
                 {
                     if(_initialVertex - 1 - fragments[fragments.Count-1].y + fragments[0].x == 0)
                     {
@@ -124,6 +135,8 @@ namespace Istoreads
                         fragments.RemoveAt(fragments.Count - 1);
                     }
                 }
+                //Debug.Log("Post check 1st connected to last");
+                //UtilsUnknown.Debugging<Vector2Int>.List(fragments);
 
                 //join small fragments
                 int numberFragments = fragments.Count;
@@ -184,6 +197,8 @@ namespace Istoreads
                         ++j;
                     }
                 }
+                //Debug.Log("Post join small fragments");
+                //UtilsUnknown.Debugging<Vector2Int>.List(fragments);
 
                 if(numberFragments > 1)
                 {
@@ -242,6 +257,12 @@ namespace Istoreads
                             }
                         }
                     }
+                    _vertexAmount -= amount;
+                    //update the _attachedVertex
+                    for(int i = 0; i < _initialVertex; ++i)
+                    {
+                        _atachedVertex[i] = _atachedVertex[i] && vertexs[i] == null;
+                    }
                     PoolSystem.Instance.GetPolygon().Split(amount, vertexs, _radius);
 
                 }
@@ -275,10 +296,11 @@ namespace Istoreads
                 vertex.OnKilled += DisableVertex;
                 vertex.Reatach(vertexPos, i, _transform);
                 ++subIndex;
-                while (vertexs[subIndex] == null && subIndex < vertexs.Length)
+                while (subIndex < vertexs.Length && vertexs[subIndex] == null)
                 {
                     ++subIndex;
                 }
+                _atachedVertex[i] = true;
             }
             gameObject.SetActive(true);
         }
