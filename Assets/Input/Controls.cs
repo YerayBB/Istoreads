@@ -70,7 +70,7 @@ namespace Istoreads
                     ""type"": ""Button"",
                     ""id"": ""98961e05-bf12-4976-9433-15a11e14a636"",
                     ""expectedControlType"": ""Button"",
-                    ""processors"": ""Clamp(min=-0.5,max=0.5)"",
+                    ""processors"": ""Clamp(min=-1,max=1)"",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 }

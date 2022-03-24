@@ -63,7 +63,7 @@ namespace Istoreads
             _transform.parent = null;
             OnKilled?.Invoke(_number);
             OnKilled = null;
-            OnDestroyed?.Invoke();
+            OnDestroyed?.Invoke(this);
         }
     }
 }

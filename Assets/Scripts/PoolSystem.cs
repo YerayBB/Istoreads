@@ -12,6 +12,8 @@ namespace Istoreads
         private int _vertexPoolInitCapacity;
         [SerializeField]
         private int _polygonPoolInitCapacity;
+        [SerializeField]
+        private int _bulletPoolCapacity;
 
         [SerializeField]
         private GameObject _vertexPrefab;
@@ -40,7 +42,7 @@ namespace Istoreads
             for (int i = 0; i < _vertexPoolInitCapacity; ++i) PoolVertex();
             for (int i = 0; i < _polygonPoolInitCapacity; ++i) PoolPolygon();
 
-            for (int i = 0; i < _polygonPoolInitCapacity; ++i) PoolBullet();
+            for (int i = 0; i < _bulletPoolCapacity; ++i) PoolBullet();
 
         }
 
@@ -97,10 +99,9 @@ namespace Istoreads
         public Bullet GetBullet()
         {
             Bullet ret;
-            if (_bulletPool.Count <= 0)
+            if (_bulletPool.Count > 0)
             {
                 ret = _bulletPool.Pop();
-
             }
             else
             {

@@ -286,7 +286,7 @@ namespace Istoreads
         private void Death()
         {
             gameObject.SetActive(false);
-            OnDestroyed?.Invoke();
+            OnDestroyed?.Invoke(this);
         }
     }
 }

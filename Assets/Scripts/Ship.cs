@@ -8,12 +8,15 @@ namespace Istoreads
     [RequireComponent(typeof(Rigidbody2D))]
     public class Ship : MonoBehaviour
     {
+        [Min(0f)]
         [SerializeField]
-        [Min(0)]
         private float _thrustSpeed = 1f;
         [SerializeField]
-        [Min(0)]
+        [Min(0f)]
         private float _rotationtSpeed = 1f;
+        [SerializeField]
+        [Min(100f)]
+        private float _bulletSpeed = 100f;
 
         private Controls _inputs;
         private Rigidbody2D _rigidBody;
@@ -40,7 +43,7 @@ namespace Istoreads
 
         private void Shot()
         {
-           
+            PoolSystem.Instance.GetBullet().Initialize(_transform.position, _transform.rotation, _transform.up, _bulletSpeed, 10);
         }
 
         private void Stop()
@@ -56,7 +59,7 @@ namespace Istoreads
 
         private void Rotate(float dir)
         {
-            //Debug.Log("Rotate");
+            Debug.Log("Rotate");
             _rigidBody.AddTorque(dir * _rotationtSpeed);
         }
 

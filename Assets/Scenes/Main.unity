@@ -708,8 +708,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vertexPoolInitCapacity: 50
   _polygonPoolInitCapacity: 10
+  _bulletPoolCapacity: 30
   _vertexPrefab: {fileID: 973607456257914696, guid: 351b024bc8afc2242ade2d6244ee19af, type: 3}
   _polygonPrefab: {fileID: 2548352406727000543, guid: 1e973256816098840ac29d08efac9fac, type: 3}
+  _bulletPrefab: {fileID: 271909274794691342, guid: 2ebf758f1a806094382b43750d14e1b4, type: 3}
 --- !u!4 &2064574143
 Transform:
   m_ObjectHideFlags: 0
@@ -806,6 +808,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _thrustSpeed: 10
   _rotationtSpeed: 0.5
+  _bulletSpeed: 1
 --- !u!212 &2123329511
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -885,3 +888,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _thrustSpeed: 1
   _rotationtSpeed: 1
+  _bulletSpeed: 1
