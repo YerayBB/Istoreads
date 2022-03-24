@@ -19,7 +19,6 @@ namespace Istoreads
         private void Awake()
         {
             _transform = transform;
-            Debug.Log($"Vertex Awaken {gameObject.GetInstanceID()}");
             //gameObject.SetActive(false);
         }
 
@@ -59,6 +58,7 @@ namespace Istoreads
 
         private void Death()
         {
+            Debug.Log($"{this.GetInstanceID()} Death");
             gameObject.SetActive(false);
             _transform.parent = null;
             OnKilled?.Invoke(_number);
