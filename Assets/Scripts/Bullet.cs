@@ -8,7 +8,7 @@ namespace Istoreads
     [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
     public class Bullet : MonoBehaviour
     {
-        public static System.Action<Bullet> OnDestroyed;
+        public static System.Action<Bullet> OnDisabled;
 
         [SerializeField]
         private float _speed;
@@ -54,7 +54,7 @@ namespace Istoreads
             _aliveCoroutine = null;
             gameObject.SetActive(false);
             _rigidbody.velocity = Vector2.zero;
-            OnDestroyed?.Invoke(this);
+            OnDisabled?.Invoke(this);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

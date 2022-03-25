@@ -49,9 +49,9 @@ namespace Istoreads
         // Start is called before the first frame update
         void Start()
         {
-            Vertex.OnDestroyed += (vertex) => _vertexPool.Push(vertex);
-            Polygon.OnDestroyed += (polygon) => _polygonPool.Push(polygon);
-            Bullet.OnDestroyed += (bullet) =>
+            Vertex.OnDisabled += (vertex) => _vertexPool.Push(vertex);
+            Polygon.OnDisabled += (polygon) => _polygonPool.Push(polygon);
+            Bullet.OnDisabled += (bullet) =>
             {
                 _activeBullets.Remove(bullet);
                 _bulletPool.Push(bullet);

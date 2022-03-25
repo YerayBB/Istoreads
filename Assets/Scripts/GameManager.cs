@@ -21,13 +21,14 @@ namespace Istoreads
         void Start()
         {
             UpdateScore();
-            PoolSystem.Instance.GetPolygon().Initialize(Random.Range(8, 15), new Vector3(Random.Range(-15, 15), Random.Range(-15, 15), 0), Random.Range(2, 4));
-            Polygon.OnDestroyed += (polygon) =>
+            var aux = new Vector3(Random.Range(-15, 15),Random.Range(-15, 15), 0);
+            PoolSystem.Instance.GetPolygon().Initialize(Random.Range(8, 15), aux, -aux, Random.Range(2, 4));
+            Polygon.OnDestroyed += () =>
             {
                 _score += 100;
                 UpdateScore();
             };
-            Vertex.OnDestroyed += (vertex) =>
+            Vertex.OnDestroyed += () =>
             {
                 _score += 1;
                 UpdateScore();
@@ -41,7 +42,8 @@ namespace Istoreads
             if (Mathf.Round(Time.time % 20) == 0)
             {
                 Debug.Log("SPAWN");
-                PoolSystem.Instance.GetPolygon().Initialize(Random.Range(8, 15), new Vector3(Random.Range(-15, 15), Random.Range(-15, 15), 0), Random.Range(2, 4));
+                var aux = new Vector3(Random.Range(-15, 15), Random.Range(-15, 15), 0);
+                PoolSystem.Instance.GetPolygon().Initialize(Random.Range(8, 15), aux, -aux, Random.Range(2, 4));
             }
         }
 
