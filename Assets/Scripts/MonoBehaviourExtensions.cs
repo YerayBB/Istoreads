@@ -10,7 +10,7 @@ namespace UtilsUnknown.Extensions
             return mono.StartCoroutine(DelayedCallCoroutine(method, delay));
         }
 
-        static IEnumerator DelayedCallCoroutine(System.Action method, float delay)
+        private static IEnumerator DelayedCallCoroutine(System.Action method, float delay)
         {
             yield return new WaitForSeconds(delay);
             method();

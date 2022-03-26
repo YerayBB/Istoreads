@@ -65,10 +65,13 @@ namespace Istoreads
 
         public void Disable()
         {
-            _init = false;
-            gameObject.SetActive(false);
-            OnKilled = null;
-            OnDisabled?.Invoke(this);
+            if (_init)
+            {
+                _init = false;
+                gameObject.SetActive(false);
+                OnKilled = null;
+                OnDisabled?.Invoke(this);
+            }
         }
 
         private void Death()

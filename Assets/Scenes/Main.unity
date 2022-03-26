@@ -865,6 +865,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 726880ca6e1635c46b84619813889e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnRate: 2
+  _spawnDistance: 40
+  _spawnCenter: {x: 0, y: 0, z: 0}
+  _polygonVertexRange: {x: 3, y: 5}
+  _polygonGrowth: 0
+  _poligonRadius: {x: 2, y: 4}
+  _polygonRadiusLimits: {x: 2, y: 4}
+  _polygonSpeedRange: {x: 2, y: 4}
+  _waveDensity: 3
+  _waveGrowth: 1
+  _trajectoryVariance: 15
 --- !u!1 &2018634353
 GameObject:
   m_ObjectHideFlags: 0
