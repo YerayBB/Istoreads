@@ -84,7 +84,7 @@ namespace Istoreads
             int amount = Mathf.RoundToInt(_waveDensity);
             for(int i = 0; i< amount; ++i)
             {
-                Vector3 direction = Random.insideUnitCircle;
+                Vector3 direction = Random.insideUnitCircle.normalized;
                 Vector3 position = _spawnCenter + direction * _spawnDistance;
 
                 Quaternion rotation = Quaternion.AngleAxis(Random.Range(-_trajectoryVariance, _trajectoryVariance), Vector3.forward);
@@ -93,6 +93,11 @@ namespace Istoreads
             }
 
             StartCoroutine(SpawnWave());
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(_spawnCenter, _spawnDistance);
         }
     }
 }
