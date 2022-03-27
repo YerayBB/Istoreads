@@ -74,10 +74,10 @@ namespace Istoreads
             }
         }
 
-        private void Death()
+        public void Death()
         {
             _init = false;
-            Debug.Log($"{this.GetInstanceID()} Death");
+            //Debug.Log($"{this.GetInstanceID()} Death");
             gameObject.SetActive(false);
             _transform.parent = null;
             OnKilled?.Invoke(_number);
@@ -90,7 +90,7 @@ namespace Istoreads
         {
             if (_init)
             {
-                Debug.Log($"Death by collision with: " + collision.gameObject.name);
+                //Debug.Log($"Death by collision with: " + collision.gameObject.name);
                 Death();
             }
         }

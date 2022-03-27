@@ -44,11 +44,11 @@ namespace Istoreads
             _speed = speed;
             gameObject.SetActive(true);
             _rigidbody.velocity = dir * _speed;
-            _aliveCoroutine = this.DelayedCall(Death, aliveTime);
+            _aliveCoroutine = this.DelayedCall(Disable, aliveTime);
 
         }
 
-        private void Death()
+        private void Disable()
         {
             if (_aliveCoroutine != null) StopCoroutine(_aliveCoroutine);
             _aliveCoroutine = null;
@@ -59,7 +59,7 @@ namespace Istoreads
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            Death();
+            Disable();
         }
     }
 }

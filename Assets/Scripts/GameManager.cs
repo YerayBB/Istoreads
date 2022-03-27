@@ -52,12 +52,14 @@ namespace Istoreads
         private void Awake()
         {
             _textScore = transform.GetChild(0).GetComponent<TMP_Text>();
+            _textLevel = transform.GetChild(1).GetComponent<TMP_Text>();
         }
 
         // Start is called before the first frame update
         void Start()
         {
             UpdateScore();
+            UpdateLevel();
            
             Polygon.OnDestroyed += () =>
             {
@@ -163,9 +165,9 @@ namespace Istoreads
                         _polygonVertexRange = new Vector2(_polygonVertexRange.x, _polygonVertexLimits.y);
                     }
                 }
-                    
-                    
 
+
+                UpdateLevel();
             }
 
         }

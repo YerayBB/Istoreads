@@ -15,6 +15,7 @@ namespace Istoreads
         private bool[] _atachedVertex;
         private Vector2 _direction = Vector2.zero;
         private float _speed = 6;
+        private int _hits = 0;
         private bool _init = false;
 
         public static event System.Action<Polygon> OnDisabled;
@@ -88,6 +89,16 @@ namespace Istoreads
         }
 
         private void LostVertex(int vertexID)
+        {
+            if (_atachedVertex[vertexID])
+            {
+                _atachedVertex[vertexID] = false;
+                --_vertexAmount;
+                CheckIntegrity();
+            }
+        }
+
+        private void TakeDamageAtVertex(int vertexID)
         {
             if (_atachedVertex[vertexID])
             {
@@ -359,6 +370,33 @@ namespace Istoreads
             gameObject.SetActive(false);
             OnDestroyed?.Invoke();
             OnDisabled?.Invoke(this);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            ++_hits;
+            if (_hits >= _vertexAmount)
+            {
+                int target = Random.Range(0, _transform.childCount);
+                _transform.GetChild(target).GetComponent<Vertex>().Death();
+                /*for(int i = 0; i<_initialVertex; ++i)
+                {
+                    if (_atachedVertex[i])
+                    {
+                        if(target == 0)
+                        {
+
+                            LostVertex(i);
+                            return;
+                        }
+                        else
+                        {
+                            --target;
+                        }
+                    }
+                }*/
+                _hits = 0;
+            }
         }
     }
 }

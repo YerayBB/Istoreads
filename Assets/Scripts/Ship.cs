@@ -91,5 +91,10 @@ namespace Istoreads
         {
             Debug.Log($"Bump {collision.gameObject.name}");
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            Debug.Log($"Ouch {collision.gameObject.name}");
+        }
     }
 }
