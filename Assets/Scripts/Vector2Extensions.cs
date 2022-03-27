@@ -20,6 +20,16 @@ namespace UtilsUnknown.Extensions
         {
             return Mathf.Max(vector2.x, vector2.y);
         }
+
+        public static float Sum(this Vector2 vector2)
+        {
+            return vector2.x + vector2.y;
+        }
+
+        public static float Diff(this Vector2 vector2)
+        {
+            return Mathf.Abs(vector2.x - vector2.y);
+        }
     }
 
     public static class Vector2IntExtensions
@@ -38,6 +48,16 @@ namespace UtilsUnknown.Extensions
         public static int MaxValue(this Vector2Int vector2)
         {
             return Mathf.Max(vector2.x, vector2.y);
+        }
+
+        public static int Sum(this Vector2Int vector2)
+        {
+            return vector2.x + vector2.y;
+        }
+
+        public static int Diff(this Vector2Int vector2)
+        {
+            return Mathf.Abs(vector2.x - vector2.y);
         }
     }
 }

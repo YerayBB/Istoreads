@@ -11,10 +11,14 @@ namespace Istoreads
     {
         private TMP_Text _textScore;
         private int _score = 0;
+        private TMP_Text _textLevel;
+        private int _level = 0;
 
         [Header("Spawner config")]
         [SerializeField]
-        private float _spawnRate = 2f;
+        private float _spawnRate = 5f;
+        [SerializeField]
+        private float _minRate = 1;
         [SerializeField]
         private float _spawnDistance = 22;
         [SerializeField]
@@ -22,19 +26,27 @@ namespace Istoreads
         [SerializeField]
         private Vector2 _polygonVertexRange = new Vector2(3, 5);
         [SerializeField]
+        private Vector2 _polygonVertexLimits = new Vector2(8, 20);
+        [SerializeField]
         private float _polygonGrowth;
         [SerializeField]
-        private Vector2 _poligonRadius = new Vector2(2, 4);
+        private Vector2 _polygonRadius = new Vector2(2, 4);
         [SerializeField]
-        private Vector2 _polygonRadiusLimits;
+        private Vector2 _polygonRadiusLimits = new Vector2(1,10);
         [SerializeField]
         private Vector2 _polygonSpeedRange = new Vector2(2, 4);
         [SerializeField]
         private float _waveDensity;
         [SerializeField]
+        private float _maxDensity;
+        [SerializeField]
         private float _waveGrowth;
         [SerializeField]
         private float _trajectoryVariance = 15;
+
+        private int _cycles = 0;
+        private int _vertexDestroyed = 0;
+        
 
 
         private void Awake()
@@ -55,6 +67,7 @@ namespace Istoreads
             Vertex.OnDestroyed += () =>
             {
                 _score += 1;
+                ++_vertexDestroyed; 
                 UpdateScore();
             };
 
@@ -89,10 +102,67 @@ namespace Istoreads
 
                 Quaternion rotation = Quaternion.AngleAxis(Random.Range(-_trajectoryVariance, _trajectoryVariance), Vector3.forward);
 
-                PoolSystem.Instance.GetPolygon().Initialize(Mathf.RoundToInt(_polygonVertexRange.RandomInRange()), position, rotation * -direction, _polygonSpeedRange.RandomInRange(), _poligonRadius.RandomInRange());
+                PoolSystem.Instance.GetPolygon().Initialize(Mathf.RoundToInt(_polygonVertexRange.RandomInRange()), position, rotation * -direction, _polygonSpeedRange.RandomInRange(), _polygonRadius.RandomInRange());
+            }
+            ++_cycles;
+            WaveIncrease();
+            StartCoroutine(SpawnWave());
+        }
+
+        private void WaveIncrease()
+        {
+            float vertexToLevel = _polygonVertexRange.Sum() * _waveDensity * 0.75f;
+            if (_vertexDestroyed > vertexToLevel || _cycles > 2) {
+                _vertexDestroyed = 0;
+                _cycles = 0;
+                ++_level;
+                _waveDensity += _waveGrowth * _waveDensity;
+                if (_waveDensity > _maxDensity)
+                {
+                    _spawnRate *= 0.9f;
+                    if (_spawnRate < _minRate)
+                    {
+                        _spawnRate = _minRate;
+                        _waveDensity = _maxDensity;
+                    }
+                    else
+                    {
+                        _waveDensity = _waveDensity / 10f;
+                        if (_waveDensity < 1) _waveDensity = 1;
+                    }
+                }
+
+                if (_polygonRadius != _polygonRadiusLimits)
+                {
+                    _polygonRadius.Scale(new Vector2(1 - _polygonGrowth, _polygonGrowth));
+                    if (_polygonRadius.x < _polygonRadiusLimits.x)
+                    {
+                        _polygonRadius = new Vector2(_polygonRadiusLimits.x, _polygonRadius.y);
+                    }
+                    if (_polygonRadius.y > _polygonRadiusLimits.y)
+                    {
+                        _polygonRadius = new Vector2(_polygonRadius.x, _polygonRadiusLimits.y);
+                    }
+
+                }
+
+                if (_polygonVertexRange != _polygonVertexLimits)
+                {
+                    _polygonVertexRange *= _polygonGrowth;
+                    if (_polygonVertexRange.x < _polygonVertexLimits.x)
+                    {
+                        _polygonVertexRange = new Vector2(_polygonVertexLimits.x, _polygonVertexRange.y);
+                    }
+                    if (_polygonVertexRange.y > _polygonVertexLimits.y)
+                    {
+                        _polygonVertexRange = new Vector2(_polygonVertexRange.x, _polygonVertexLimits.y);
+                    }
+                }
+                    
+                    
+
             }
 
-            StartCoroutine(SpawnWave());
         }
 
         private void OnDrawGizmos()
