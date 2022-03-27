@@ -91,6 +91,11 @@ namespace Istoreads
             _textScore.text = _score.ToString("000000000");
         }
 
+        private void UpdateLevel()
+        {
+            _textLevel.text = _level.ToString("00");
+        }
+
         private IEnumerator SpawnWave()
         {
             yield return new WaitForSeconds(_spawnRate);
@@ -131,10 +136,10 @@ namespace Istoreads
                         if (_waveDensity < 1) _waveDensity = 1;
                     }
                 }
-
+                Vector2 growthScale = new Vector2(1 - _polygonGrowth, 1 + _polygonGrowth);
                 if (_polygonRadius != _polygonRadiusLimits)
                 {
-                    _polygonRadius.Scale(new Vector2(1 - _polygonGrowth, _polygonGrowth));
+                    _polygonRadius.Scale(growthScale);
                     if (_polygonRadius.x < _polygonRadiusLimits.x)
                     {
                         _polygonRadius = new Vector2(_polygonRadiusLimits.x, _polygonRadius.y);
@@ -148,7 +153,7 @@ namespace Istoreads
 
                 if (_polygonVertexRange != _polygonVertexLimits)
                 {
-                    _polygonVertexRange *= _polygonGrowth;
+                    _polygonVertexRange.Scale(growthScale);
                     if (_polygonVertexRange.x < _polygonVertexLimits.x)
                     {
                         _polygonVertexRange = new Vector2(_polygonVertexLimits.x, _polygonVertexRange.y);
