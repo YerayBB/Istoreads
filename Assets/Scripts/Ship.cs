@@ -2,25 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UtilsUnknown;
 
 namespace Istoreads
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class Ship : MonoBehaviour
     {
-        [Min(0f)]
         [SerializeField]
         private float _thrustSpeed = 1f;
         [SerializeField]
-        [Min(0f)]
         private float _rotationtSpeed = 1f;
         [SerializeField]
-        [Min(100f)]
+        private GameObject _bulletPrefab;
+        [SerializeField]
+        private float _bulletTime = 10;
+        [SerializeField]
+        private uint _maxBullets = 20;
+        [SerializeField]
+        private uint _initBullets = 10;
+        [SerializeField]
         private float _bulletSpeed = 100f;
 
         private Controls _inputs;
         private Rigidbody2D _rigidBody;
         private Transform _transform;
+        private PoolMono<Bullet> _bulletPool;
 
         private bool _thrusting;
         private float _torque = 0;
@@ -30,6 +37,9 @@ namespace Istoreads
         {
             _rigidBody = GetComponent<Rigidbody2D>();
             _transform = transform;
+
+            _bulletPool = new PoolMono<Bullet>(_bulletPrefab, _maxBullets);
+            _bulletPool.Init(_initBullets);
 
             _inputs = new Controls();
             _inputs.Player.RotateMouse.performed += RotateMouse;
@@ -43,7 +53,7 @@ namespace Istoreads
 
         private void Shot()
         {
-            PoolSystem.Instance.GetBullet().Initialize(_transform.position, _transform.rotation, _transform.up, _bulletSpeed, 10);
+            _bulletPool.GetItem().Initialize(_transform.position, _transform.rotation, _transform.up, _bulletSpeed, _bulletTime);
         }
 
         private void Stop()

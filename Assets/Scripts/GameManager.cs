@@ -3,16 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UtilsUnknown.Extensions;
+using UtilsUnknown;
 
 
 namespace Istoreads
 {
     public class GameManager : MonoBehaviour
     {
+        public static GameManager Instance { get; private set; }
+
         private TMP_Text _textScore;
         private int _score = 0;
         private TMP_Text _textLevel;
         private int _level = 0;
+
+        [Header("Pool config")]
+        [SerializeField]
+        private GameObject _polygonPrefab;
+        [SerializeField]
+        private uint _polygonPoolInitCapacity;
+        [SerializeField]
+        private float _polygonTimeout = 30;
+        [SerializeField]
+        private GameObject _vertexPrefab;
+        [SerializeField]
+        private uint _vertexPoolInitCapacity;
+
 
         [Header("Spawner config")]
         [SerializeField]
@@ -44,6 +60,10 @@ namespace Istoreads
         [SerializeField]
         private float _trajectoryVariance = 15;
 
+        private PoolMono<Polygon> _polygonPool;
+        private PoolMono<Vertex> _vertexPool;
+
+
         private int _cycles = 0;
         private int _vertexDestroyed = 0;
         
@@ -51,8 +71,23 @@ namespace Istoreads
 
         private void Awake()
         {
+            if(Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(this);
+            }
+
             _textScore = transform.GetChild(0).GetComponent<TMP_Text>();
             _textLevel = transform.GetChild(1).GetComponent<TMP_Text>();
+
+            _polygonPool = new PoolMono<Polygon>(_polygonPrefab);
+            _vertexPool = new PoolMono<Vertex>(_vertexPrefab);
+
+            _polygonPool.Init(_polygonPoolInitCapacity);
+            _vertexPool.Init(_vertexPoolInitCapacity);
         }
 
         // Start is called before the first frame update
@@ -76,18 +111,6 @@ namespace Istoreads
             StartCoroutine(SpawnWave());
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            //Debug.Log(Time.time);
-            /*if (Mathf.Round(Time.time % 20) == 0)
-            {
-                Debug.Log("SPAWN");
-                var aux = new Vector3(Random.Range(-15, 15), Random.Range(-15, 15), 0);
-                PoolSystem.Instance.GetPolygon().Initialize(Random.Range(8, 15), aux, -aux, Random.Range(2, 4));
-            }*/
-        }
-
         private void UpdateScore()
         {
             _textScore.text = _score.ToString("000000000");
@@ -109,7 +132,7 @@ namespace Istoreads
 
                 Quaternion rotation = Quaternion.AngleAxis(Random.Range(-_trajectoryVariance, _trajectoryVariance), Vector3.forward);
 
-                PoolSystem.Instance.GetPolygon().Initialize(Mathf.RoundToInt(_polygonVertexRange.RandomInRange()), position, rotation * -direction, _polygonSpeedRange.RandomInRange(), _polygonRadius.RandomInRange());
+                _polygonPool.GetItem().Initialize(Mathf.RoundToInt(_polygonVertexRange.RandomInRange()), position, rotation * -direction, _polygonSpeedRange.RandomInRange(), _polygonRadius.RandomInRange(), _polygonTimeout);
             }
             ++_cycles;
             WaveIncrease();
@@ -175,6 +198,16 @@ namespace Istoreads
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(_spawnCenter, _spawnDistance);
+        }
+
+        public Vertex GetVertex()
+        {
+            return _vertexPool.GetItem();
+        }
+
+        public Polygon GetPolygon()
+        {
+            return _polygonPool.GetItem();
         }
     }
 }

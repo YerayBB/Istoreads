@@ -473,7 +473,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1145654063
 GameObject:
@@ -981,7 +981,7 @@ RectTransform:
   - {fileID: 2018634354}
   - {fileID: 127674586}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1000,6 +1000,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 726880ca6e1635c46b84619813889e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _polygonPrefab: {fileID: 2548352406727000543, guid: 1e973256816098840ac29d08efac9fac, type: 3}
+  _polygonPoolInitCapacity: 10
+  _polygonTimeout: 30
+  _vertexPrefab: {fileID: 973607456257914696, guid: 351b024bc8afc2242ade2d6244ee19af, type: 3}
+  _vertexPoolInitCapacity: 30
   _spawnRate: 5
   _minRate: 1
   _spawnDistance: 40
@@ -1008,7 +1013,7 @@ MonoBehaviour:
   _polygonVertexLimits: {x: 8, y: 20}
   _polygonGrowth: 0.2
   _polygonRadius: {x: 2.5, y: 2.5}
-  _polygonRadiusLimits: {x: 0.5, y: 4}
+  _polygonRadiusLimits: {x: 0.75, y: 4}
   _polygonSpeedRange: {x: 1.5, y: 4}
   _waveDensity: 3
   _maxDensity: 15
@@ -1148,55 +1153,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018634353}
   m_CullTransparentMesh: 1
---- !u!1 &2064574141
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2064574143}
-  - component: {fileID: 2064574142}
-  m_Layer: 0
-  m_Name: Spawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2064574142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064574141}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f056f591be3a96f4f9a784ecf4c214f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _vertexPoolInitCapacity: 50
-  _polygonPoolInitCapacity: 10
-  _bulletPoolCapacity: 30
-  _vertexPrefab: {fileID: 973607456257914696, guid: 351b024bc8afc2242ade2d6244ee19af, type: 3}
-  _polygonPrefab: {fileID: 2548352406727000543, guid: 1e973256816098840ac29d08efac9fac, type: 3}
-  _bulletPrefab: {fileID: 271909274794691342, guid: 2ebf758f1a806094382b43750d14e1b4, type: 3}
---- !u!4 &2064574143
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064574141}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.54818326, y: 1.1385173, z: -8.50787}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2123329507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,6 +1234,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _thrustSpeed: 15
   _rotationtSpeed: 1
+  _bulletPrefab: {fileID: 271909274794691342, guid: 2ebf758f1a806094382b43750d14e1b4, type: 3}
+  _bulletTime: 10
+  _maxBullets: 20
+  _initBullets: 10
   _bulletSpeed: 100
 --- !u!212 &2123329511
 SpriteRenderer:

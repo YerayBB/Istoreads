@@ -49,13 +49,13 @@ namespace Istoreads
         // Start is called before the first frame update
         void Start()
         {
-            Vertex.OnDisabled += (vertex) => _vertexPool.Push(vertex);
+            /*Vertex.OnDisabled += (vertex) => _vertexPool.Push(vertex);
             Polygon.OnDisabled += (polygon) => _polygonPool.Push(polygon);
-            Bullet.OnDisabled += (bullet) =>
+            /*Bullet.OnDisabled += (bullet) =>
             {
                 _activeBullets.Remove(bullet);
                 _bulletPool.Push(bullet);
-            };
+            };*/
         }
 
         // Update is called once per frame

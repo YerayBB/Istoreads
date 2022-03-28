@@ -1,22 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UtilsUnknown;
 
 namespace Istoreads
 {
-    public class Vertex : MonoBehaviour
+    public class Vertex : PoolableBehaviour
     {
         private int _number;
 
-        public static event System.Action<Vertex> OnDisabled;
         public static event System.Action OnDestroyed;
 
         public event System.Action<int> OnKilled = null;
 
         private Transform _transform;
         private Vector3? _finalPos = null;
-        private bool _init = false;
-
 
         private void Awake()
         {
@@ -63,14 +61,14 @@ namespace Istoreads
             _number = number;
         }
 
-        public void Disable()
+        public override void Disable()
         {
             if (_init)
             {
                 _init = false;
                 gameObject.SetActive(false);
                 OnKilled = null;
-                OnDisabled?.Invoke(this);
+                OnDisabledTrigger(this);
             }
         }
 
@@ -83,7 +81,7 @@ namespace Istoreads
             OnKilled?.Invoke(_number);
             OnKilled = null;
             OnDestroyed?.Invoke();
-            OnDisabled?.Invoke(this);
+            OnDisabledTrigger(this);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

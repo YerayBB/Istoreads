@@ -2,21 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UtilsUnknown.Extensions;
+using UtilsUnknown;
 
 namespace Istoreads
 {
     [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
-    public class Bullet : MonoBehaviour
+    public class Bullet : PoolableTimedBehaviour
     {
-        public static System.Action<Bullet> OnDisabled;
-
         [SerializeField]
         private float _speed;
 
         private Rigidbody2D _rigidbody;
         private Transform _transform;
-
-        private Coroutine _aliveCoroutine = null;
 
         private void Awake()
         {
@@ -38,23 +35,29 @@ namespace Istoreads
 
         public void Initialize(Vector3 pos, Quaternion rotation, Vector2 dir, float speed, float aliveTime)
         {
-            if (_aliveCoroutine != null) StopCoroutine(_aliveCoroutine);
+            _init = false;
+            if (_timeoutCoroutine != null) StopCoroutine(_timeoutCoroutine);
             _transform.position = pos;
             _transform.rotation = rotation;
             _speed = speed;
             gameObject.SetActive(true);
             _rigidbody.velocity = dir * _speed;
-            _aliveCoroutine = this.DelayedCall(Disable, aliveTime);
+            _timeoutCoroutine = this.DelayedCall(Disable, aliveTime);
+            _init = true;
 
         }
 
-        private void Disable()
+        public override void Disable()
         {
-            if (_aliveCoroutine != null) StopCoroutine(_aliveCoroutine);
-            _aliveCoroutine = null;
-            gameObject.SetActive(false);
-            _rigidbody.velocity = Vector2.zero;
-            OnDisabled?.Invoke(this);
+            if (_init)
+            {
+                if (_timeoutCoroutine != null) StopCoroutine(_timeoutCoroutine);
+                _timeoutCoroutine = null;
+                gameObject.SetActive(false);
+                _rigidbody.velocity = Vector2.zero;
+                OnDisabledTrigger(this);
+                _init = false;
+            }
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
