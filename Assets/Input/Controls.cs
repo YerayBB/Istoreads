@@ -242,6 +242,54 @@ namespace Istoreads
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Menu"",
+            ""id"": ""e3d55de2-9bf7-4ebb-8050-926bf16bc47b"",
+            ""actions"": [
+                {
+                    ""name"": ""Retry"",
+                    ""type"": ""Button"",
+                    ""id"": ""8900abf0-48a4-4e97-a35b-dfbea717e3b3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quit"",
+                    ""type"": ""Button"",
+                    ""id"": ""7cffe0a3-e3a5-4e9a-a870-2dae5cfa21b6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a2b303dc-508d-4f86-ad4e-354f79545412"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Retry"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ec15501-9c28-4674-a0d7-cf0058b366ea"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -253,6 +301,10 @@ namespace Istoreads
             m_Player_Stop = m_Player.FindAction("Stop", throwIfNotFound: true);
             m_Player_Shot = m_Player.FindAction("Shot", throwIfNotFound: true);
             m_Player_RotateMouse = m_Player.FindAction("RotateMouse", throwIfNotFound: true);
+            // Menu
+            m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+            m_Menu_Retry = m_Menu.FindAction("Retry", throwIfNotFound: true);
+            m_Menu_Quit = m_Menu.FindAction("Quit", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -373,6 +425,47 @@ namespace Istoreads
             }
         }
         public PlayerActions @Player => new PlayerActions(this);
+
+        // Menu
+        private readonly InputActionMap m_Menu;
+        private IMenuActions m_MenuActionsCallbackInterface;
+        private readonly InputAction m_Menu_Retry;
+        private readonly InputAction m_Menu_Quit;
+        public struct MenuActions
+        {
+            private @Controls m_Wrapper;
+            public MenuActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Retry => m_Wrapper.m_Menu_Retry;
+            public InputAction @Quit => m_Wrapper.m_Menu_Quit;
+            public InputActionMap Get() { return m_Wrapper.m_Menu; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
+            public void SetCallbacks(IMenuActions instance)
+            {
+                if (m_Wrapper.m_MenuActionsCallbackInterface != null)
+                {
+                    @Retry.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnRetry;
+                    @Retry.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnRetry;
+                    @Retry.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnRetry;
+                    @Quit.started -= m_Wrapper.m_MenuActionsCallbackInterface.OnQuit;
+                    @Quit.performed -= m_Wrapper.m_MenuActionsCallbackInterface.OnQuit;
+                    @Quit.canceled -= m_Wrapper.m_MenuActionsCallbackInterface.OnQuit;
+                }
+                m_Wrapper.m_MenuActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Retry.started += instance.OnRetry;
+                    @Retry.performed += instance.OnRetry;
+                    @Retry.canceled += instance.OnRetry;
+                    @Quit.started += instance.OnQuit;
+                    @Quit.performed += instance.OnQuit;
+                    @Quit.canceled += instance.OnQuit;
+                }
+            }
+        }
+        public MenuActions @Menu => new MenuActions(this);
         public interface IPlayerActions
         {
             void OnRotate(InputAction.CallbackContext context);
@@ -380,6 +473,11 @@ namespace Istoreads
             void OnStop(InputAction.CallbackContext context);
             void OnShot(InputAction.CallbackContext context);
             void OnRotateMouse(InputAction.CallbackContext context);
+        }
+        public interface IMenuActions
+        {
+            void OnRetry(InputAction.CallbackContext context);
+            void OnQuit(InputAction.CallbackContext context);
         }
     }
 }

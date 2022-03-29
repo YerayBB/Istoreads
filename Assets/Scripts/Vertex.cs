@@ -11,6 +11,7 @@ namespace Istoreads
         private Vector3? _finalPos = null;
 
         public static event System.Action OnDestroyed;
+        public static event System.Action<Vector3> OnDestroyedAt;
         public event System.Action<int> OnKilled = null;
 
 
@@ -91,7 +92,14 @@ namespace Istoreads
             OnKilled?.Invoke(_number);
             OnKilled = null;
             OnDestroyed?.Invoke();
+            OnDestroyedAt?.Invoke(_transform.position);
             OnDisabledTrigger(this);
+        }
+
+        public static void ResetEvents()
+        {
+            OnDestroyed = null;
+            OnDestroyedAt = null;
         }
     }
 }

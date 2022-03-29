@@ -391,5 +391,9 @@ namespace Istoreads
             OnDisabledTrigger(this);
         }
 
+        public static void ResetEvents()
+        {
+            OnDestroyed = null;
+        }
     }
 }

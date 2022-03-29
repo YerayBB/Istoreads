@@ -69,7 +69,6 @@ namespace Istoreads
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            Debug.Log($"Bump {collision.gameObject.name}");
             if(collision.gameObject.layer == LayerMask.NameToLayer("Weakness"))
             {
                 Death();
@@ -78,7 +77,6 @@ namespace Istoreads
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            Debug.Log($"Ouch {collision.gameObject.name}");
             Death();
         }
 
@@ -113,7 +111,8 @@ namespace Istoreads
         private void Death()
         {
             _inputs.Player.Disable();
-            Debug.Log("YOU ARE DEAD");
+            GameManager.Instance.GameOverUI();
+            gameObject.SetActive(false);
         }
     }
 }

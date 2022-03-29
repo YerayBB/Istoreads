@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 using UtilsUnknown.Extensions;
 using UtilsUnknown;
 
 
 namespace Istoreads
 {
+    [RequireComponent(typeof(Animator))]
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
@@ -53,6 +55,12 @@ namespace Istoreads
         [SerializeField]
         private float _trajectoryVariance = 15;
 
+        [SerializeField]
+        private ParticleSystem _particleSystem;
+        private Transform _particleTransform;
+
+        private Animator _animatorUI;
+        private Controls _inputs;
         private TMP_Text _textScore;
         private TMP_Text _textLevel;
 
@@ -77,10 +85,17 @@ namespace Istoreads
             {
                 Destroy(this);
             }
+            _animatorUI = GetComponent<Animator>();
+            _textScore = transform.GetChild(1).GetComponent<TMP_Text>();
+            _textLevel = transform.GetChild(2).GetComponent<TMP_Text>();
+            if (_particleSystem != null) _particleTransform = _particleSystem.transform;
 
-            _textScore = transform.GetChild(0).GetComponent<TMP_Text>();
-            _textLevel = transform.GetChild(1).GetComponent<TMP_Text>();
+            //input handling
+            _inputs = new Controls();
+            _inputs.Menu.Retry.performed += (a) => Retry();
+            _inputs.Menu.Quit.performed += (a) => Quit();
 
+            //Pools init
             _polygonPool = new PoolMono<Polygon>(_polygonPrefab);
             _vertexPool = new PoolMono<Vertex>(_vertexPrefab);
 
@@ -92,19 +107,31 @@ namespace Istoreads
         {
             UpdateScore();
             UpdateLevel();
-           
+
+            Polygon.ResetEvents();
             Polygon.OnDestroyed += () =>
             {
                 _score += 100;
                 UpdateScore();
             };
 
+            Vertex.ResetEvents();
             Vertex.OnDestroyed += () =>
             {
                 _score += 1;
                 ++_vertexDestroyed; 
                 UpdateScore();
             };
+
+            if(_particleSystem != null)
+            {
+                Vertex.OnDestroyedAt += (pos) =>
+                {
+                    _particleSystem.Stop();
+                    _particleTransform.position = pos;
+                    _particleSystem.Play();
+                };
+            }
 
             StartCoroutine(SpawnWave());
         }
@@ -125,6 +152,23 @@ namespace Istoreads
         public Polygon GetPolygon()
         {
             return _polygonPool.GetItem();
+        }
+
+        public void GameOverUI()
+        {
+            _inputs.Menu.Enable();
+            StopAllCoroutines();
+            _animatorUI.SetTrigger("GameOver");
+        }
+
+        public void Retry()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public void Quit()
+        {
+            SceneManager.LoadScene("Tittle");
         }
 
 

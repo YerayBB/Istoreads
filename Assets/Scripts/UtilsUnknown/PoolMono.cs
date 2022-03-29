@@ -38,7 +38,7 @@ namespace UtilsUnknown
 
         public void Init(uint amount)
         {
-            uint cap = amount > _limitCapacity ? _limitCapacity : amount;
+            uint cap = _limitCapacity == 0 ? amount : amount > _limitCapacity ? _limitCapacity : amount;
             for(uint i = 0; i< cap; ++i)
             {
                 PoolItem();
