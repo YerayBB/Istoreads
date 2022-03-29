@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UtilsUnknown.Extensions;
 
 namespace UtilsUnknown
 {
+    //Base class for MonoBehaviours that can be pooled and have expiration time
     public class PoolableTimedBehaviour : PoolableBehaviour
     {
-        protected Coroutine _timeoutCoroutine = null;
         protected float _defaultTimeout = 10f;
+        protected Coroutine _timeoutCoroutine = null;
+
 
         public override void Initialize()
         {

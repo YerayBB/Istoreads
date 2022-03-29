@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace UtilsUnknown
 {
+    //Base class for Monobehaviours that can be pooled
     public abstract class PoolableBehaviour : MonoBehaviour, IPoolable
     {
+        protected bool _init = false;
+
         public event System.Action<IPoolable> OnDisabled;
 
-        protected bool _init = false;
 
         public virtual void Disable()
         {
@@ -27,6 +27,7 @@ namespace UtilsUnknown
             _init = true;
         }
 
+        //Required to be able to call the event on a subclass
         protected virtual void OnDisabledTrigger(IPoolable item)
         {
             OnDisabled?.Invoke(item);

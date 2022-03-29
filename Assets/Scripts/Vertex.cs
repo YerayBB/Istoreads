@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UtilsUnknown;
 
@@ -7,19 +5,20 @@ namespace Istoreads
 {
     public class Vertex : PoolableBehaviour
     {
+        private Transform _transform;
+
         private int _number;
+        private Vector3? _finalPos = null;
 
         public static event System.Action OnDestroyed;
-
         public event System.Action<int> OnKilled = null;
 
-        private Transform _transform;
-        private Vector3? _finalPos = null;
+
+        #region MonoBehaviourCalls
 
         private void Awake()
         {
             _transform = transform;
-            //gameObject.SetActive(false);
         }
 
         private void FixedUpdate()
@@ -43,6 +42,17 @@ namespace Istoreads
             }
         }
 
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (_init)
+            {
+                Death();
+            }
+        }
+
+        #endregion
+
+        //Initialize the vertex as new with the given data
         public void Initialize(Vector3 pos, int number, Transform parent)
         {
             _init = false;
@@ -54,6 +64,7 @@ namespace Istoreads
             gameObject.SetActive(true);
         }
 
+        //Attach to another parent while being active
         public void Reatach(Vector3 pos, int number, Transform parent)
         {
             _transform.parent = parent;
@@ -75,22 +86,12 @@ namespace Istoreads
         public void Death()
         {
             _init = false;
-            //Debug.Log($"{this.GetInstanceID()} Death");
             gameObject.SetActive(false);
             _transform.parent = null;
             OnKilled?.Invoke(_number);
             OnKilled = null;
             OnDestroyed?.Invoke();
             OnDisabledTrigger(this);
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (_init)
-            {
-                //Debug.Log($"Death by collision with: " + collision.gameObject.name);
-                Death();
-            }
         }
     }
 }

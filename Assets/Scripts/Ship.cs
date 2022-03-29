@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UtilsUnknown;
@@ -32,6 +30,7 @@ namespace Istoreads
         private bool _thrusting;
         private float _torque = 0;
 
+        #region MonoBehaviourCalls
 
         private void Awake()
         {
@@ -51,35 +50,6 @@ namespace Istoreads
             _inputs.Player.Shot.performed += (context) => Shot();
         }
 
-        private void Shot()
-        {
-            _bulletPool.GetItem().Initialize(_transform.position, _transform.rotation, _transform.up, _bulletSpeed, _bulletTime);
-        }
-
-        private void Stop()
-        {
-            _rigidBody.velocity = Vector2.zero;
-            _rigidBody.angularVelocity = 0;
-        }
-
-        private void RotateMouse(InputAction.CallbackContext context)
-        {
-            Rotate(context.ReadValue<float>());
-        }
-
-        private void Rotate(float dir)
-        {
-            //Debug.Log("Rotate");
-            _rigidBody.AddTorque(dir * _rotationtSpeed);
-        }
-
-        private void Thrust()
-        {
-            //Debug.Log("Thrust");
-            _rigidBody.AddForce(_transform.up * _thrustSpeed);
-        }
-
-        // Start is called before the first frame update
         void Start()
         {
             _inputs.Player.Enable();
@@ -91,7 +61,7 @@ namespace Istoreads
             {
                 Thrust();
             }
-            if(_torque != 0)
+            if (_torque != 0)
             {
                 Rotate(_torque);
             }
@@ -105,6 +75,34 @@ namespace Istoreads
         private void OnTriggerEnter2D(Collider2D collision)
         {
             Debug.Log($"Ouch {collision.gameObject.name}");
+        }
+
+        #endregion
+
+        private void Thrust()
+        {
+            _rigidBody.AddForce(_transform.up * _thrustSpeed);
+        }
+
+        private void Rotate(float dir)
+        {
+            _rigidBody.AddTorque(dir * _rotationtSpeed);
+        }
+
+        private void RotateMouse(InputAction.CallbackContext context)
+        {
+            Rotate(context.ReadValue<float>());
+        }
+
+        private void Stop()
+        {
+            _rigidBody.velocity = Vector2.zero;
+            _rigidBody.angularVelocity = 0;
+        }
+
+        private void Shot()
+        {
+            _bulletPool.GetItem().Initialize(_transform.position, _transform.rotation, _transform.up, _bulletSpeed, _bulletTime);
         }
     }
 }

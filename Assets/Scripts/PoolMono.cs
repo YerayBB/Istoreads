@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UtilsUnknown
 {
+    //Generic pool of MonoBehaviours
     public class PoolMono<T> where T : PoolableBehaviour
     {
         private Stack<T> _pool;

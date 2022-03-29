@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UtilsUnknown.Extensions;
 using UtilsUnknown;
@@ -15,23 +13,16 @@ namespace Istoreads
         private Rigidbody2D _rigidbody;
         private Transform _transform;
 
+
+        #region MonoBehaviourCalls
+
         private void Awake()
         {
             _transform = transform;
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+        #endregion
 
         public void Initialize(Vector3 pos, Quaternion rotation, Vector2 dir, float speed, float aliveTime)
         {
@@ -44,7 +35,6 @@ namespace Istoreads
             _rigidbody.velocity = dir * _speed;
             _timeoutCoroutine = this.DelayedCall(Disable, aliveTime);
             _init = true;
-
         }
 
         public override void Disable()

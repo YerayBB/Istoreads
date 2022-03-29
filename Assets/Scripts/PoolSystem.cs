@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Istoreads
 {
+    //Deprecated
     public class PoolSystem : MonoBehaviour
     {
         public static PoolSystem Instance { get; private set; }

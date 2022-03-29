@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UtilsUnknown.Extensions;
@@ -12,11 +11,6 @@ namespace Istoreads
     {
         public static GameManager Instance { get; private set; }
 
-        private TMP_Text _textScore;
-        private int _score = 0;
-        private TMP_Text _textLevel;
-        private int _level = 0;
-
         [Header("Pool config")]
         [SerializeField]
         private GameObject _polygonPrefab;
@@ -28,7 +22,6 @@ namespace Istoreads
         private GameObject _vertexPrefab;
         [SerializeField]
         private uint _vertexPoolInitCapacity;
-
 
         [Header("Spawner config")]
         [SerializeField]
@@ -60,14 +53,19 @@ namespace Istoreads
         [SerializeField]
         private float _trajectoryVariance = 15;
 
+        private TMP_Text _textScore;
+        private TMP_Text _textLevel;
+
+        private int _score = 0;
+        private int _level = 0;
+        private int _cycles = 0;
+        private int _vertexDestroyed = 0;
+
         private PoolMono<Polygon> _polygonPool;
         private PoolMono<Vertex> _vertexPool;
 
 
-        private int _cycles = 0;
-        private int _vertexDestroyed = 0;
-        
-
+        #region MonoBehaviourCalls
 
         private void Awake()
         {
@@ -90,7 +88,6 @@ namespace Istoreads
             _vertexPool.Init(_vertexPoolInitCapacity);
         }
 
-        // Start is called before the first frame update
         void Start()
         {
             UpdateScore();
@@ -101,6 +98,7 @@ namespace Istoreads
                 _score += 100;
                 UpdateScore();
             };
+
             Vertex.OnDestroyed += () =>
             {
                 _score += 1;
@@ -110,6 +108,25 @@ namespace Istoreads
 
             StartCoroutine(SpawnWave());
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(_spawnCenter, _spawnDistance);
+        }
+
+        #endregion
+
+
+        public Vertex GetVertex()
+        {
+            return _vertexPool.GetItem();
+        }
+
+        public Polygon GetPolygon()
+        {
+            return _polygonPool.GetItem();
+        }
+
 
         private void UpdateScore()
         {
@@ -130,6 +147,7 @@ namespace Istoreads
                 Vector3 direction = Random.insideUnitCircle.normalized;
                 Vector3 position = _spawnCenter + direction * _spawnDistance;
 
+                //add variation to its trajectory
                 Quaternion rotation = Quaternion.AngleAxis(Random.Range(-_trajectoryVariance, _trajectoryVariance), Vector3.forward);
 
                 _polygonPool.GetItem().Initialize(Mathf.RoundToInt(_polygonVertexRange.RandomInRange()), position, rotation * -direction, _polygonSpeedRange.RandomInRange(), _polygonRadius.RandomInRange(), _polygonTimeout);
@@ -142,14 +160,18 @@ namespace Istoreads
         private void WaveIncrease()
         {
             float vertexToLevel = _polygonVertexRange.Sum() * _waveDensity * 0.75f;
+            //level up if requirements completed
             if (_vertexDestroyed > vertexToLevel || _cycles > 2) {
                 _vertexDestroyed = 0;
                 _cycles = 0;
                 ++_level;
                 _waveDensity += _waveGrowth * _waveDensity;
+
+                //if density surpased, spawn faster but reduce density
                 if (_waveDensity > _maxDensity)
                 {
                     _spawnRate *= 0.9f;
+                    //if cant spawn faster, leave density as it is
                     if (_spawnRate < _minRate)
                     {
                         _spawnRate = _minRate;
@@ -161,6 +183,8 @@ namespace Istoreads
                         if (_waveDensity < 1) _waveDensity = 1;
                     }
                 }
+
+                //increase the range of radius for the polygons according to polygongrowth, inside some limits
                 Vector2 growthScale = new Vector2(1 - _polygonGrowth, 1 + _polygonGrowth);
                 if (_polygonRadius != _polygonRadiusLimits)
                 {
@@ -173,9 +197,9 @@ namespace Istoreads
                     {
                         _polygonRadius = new Vector2(_polygonRadius.x, _polygonRadiusLimits.y);
                     }
-
                 }
 
+                //increase the range of vertex the polygons might have according to polygongrowth, inside some limits
                 if (_polygonVertexRange != _polygonVertexLimits)
                 {
                     _polygonVertexRange.Scale(growthScale);
@@ -189,25 +213,9 @@ namespace Istoreads
                     }
                 }
 
-
                 UpdateLevel();
             }
 
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(_spawnCenter, _spawnDistance);
-        }
-
-        public Vertex GetVertex()
-        {
-            return _vertexPool.GetItem();
-        }
-
-        public Polygon GetPolygon()
-        {
-            return _polygonPool.GetItem();
         }
     }
 }
