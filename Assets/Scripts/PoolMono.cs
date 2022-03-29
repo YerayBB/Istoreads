@@ -6,7 +6,7 @@ namespace UtilsUnknown
     //Generic pool of MonoBehaviours
     public class PoolMono<T> where T : PoolableBehaviour
     {
-        private Stack<T> _pool;
+        private Queue<T> _pool;
         private List<T> _activeItems;
         private uint _limitCapacity = 0;
         private GameObject _prefab;
@@ -24,7 +24,7 @@ namespace UtilsUnknown
             {
                 throw new MissingComponentException($"The given GameObject does not contain a Component of type {typeof(T).ToString()}");
             }
-            _pool = new Stack<T>();
+            _pool = new Queue<T>();
         }
 
         public PoolMono(GameObject prefab, uint maxCapacity) : this(prefab)
@@ -59,7 +59,7 @@ namespace UtilsUnknown
                     if (_pool.Count + _activeItems.Count < _limitCapacity)
                     {
                         PoolItem();
-                        ret = _pool.Pop();
+                        ret = _pool.Dequeue();
                     }
                     else
                     {
@@ -70,7 +70,7 @@ namespace UtilsUnknown
                     return ret;
                 }
             }
-            return _pool.Pop();
+            return _pool.Dequeue();
         }
 
         private void PoolItem()
@@ -81,9 +81,9 @@ namespace UtilsUnknown
             component.OnDisabled += (item) =>
             {
                 if (_limitCapacity != 0) _activeItems.Remove((T)item);
-                _pool.Push((T)item);
+                _pool.Enqueue((T)item);
             };
-            _pool.Push(component);
+            _pool.Enqueue(component);
         }
     }
 }

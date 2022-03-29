@@ -317,7 +317,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856526395}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -16, z: 10}
+  m_LocalPosition: {x: 0, y: -15.5, z: 10}
   m_LocalScale: {x: 42, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 184607267}
@@ -585,7 +585,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1302636380}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -21, y: 0, z: 10}
+  m_LocalPosition: {x: -20.5, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 32, z: 1}
   m_Children: []
   m_Father: {fileID: 184607267}
@@ -694,7 +694,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1304824927}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21, y: 0, z: 10}
+  m_LocalPosition: {x: 20.5, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 32, z: 1}
   m_Children: []
   m_Father: {fileID: 184607267}
@@ -803,7 +803,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1397247453}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 16, z: 10}
+  m_LocalPosition: {x: 0, y: 15.5, z: 10}
   m_LocalScale: {x: 42, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 184607267}
@@ -900,7 +900,7 @@ GameObject:
   - component: {fileID: 1594792550}
   - component: {fileID: 1594792554}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1002,21 +1002,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _polygonPrefab: {fileID: 2548352406727000543, guid: 1e973256816098840ac29d08efac9fac, type: 3}
   _polygonPoolInitCapacity: 10
-  _polygonTimeout: 30
+  _polygonTimeout: 40
   _vertexPrefab: {fileID: 973607456257914696, guid: 351b024bc8afc2242ade2d6244ee19af, type: 3}
   _vertexPoolInitCapacity: 30
   _spawnRate: 5
   _minRate: 1
-  _spawnDistance: 40
+  _spawnDistance: 30
   _spawnCenter: {x: 0, y: 0, z: 0}
   _polygonVertexRange: {x: 3, y: 5}
   _polygonVertexLimits: {x: 8, y: 20}
-  _polygonGrowth: 0.2
+  _polygonGrowth: 0.05
   _polygonRadius: {x: 2.5, y: 2.5}
   _polygonRadiusLimits: {x: 0.75, y: 4}
   _polygonSpeedRange: {x: 1.5, y: 4}
   _waveDensity: 3
-  _maxDensity: 15
+  _maxDensity: 10
   _waveGrowth: 0.1
   _trajectoryVariance: 15
 --- !u!1 &2018634353

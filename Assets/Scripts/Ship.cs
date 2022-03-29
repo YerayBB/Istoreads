@@ -70,11 +70,16 @@ namespace Istoreads
         private void OnCollisionEnter2D(Collision2D collision)
         {
             Debug.Log($"Bump {collision.gameObject.name}");
+            if(collision.gameObject.layer == LayerMask.NameToLayer("Weakness"))
+            {
+                Death();
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             Debug.Log($"Ouch {collision.gameObject.name}");
+            Death();
         }
 
         #endregion
@@ -103,6 +108,12 @@ namespace Istoreads
         private void Shot()
         {
             _bulletPool.GetItem().Initialize(_transform.position, _transform.rotation, _transform.up, _bulletSpeed, _bulletTime);
+        }
+
+        private void Death()
+        {
+            _inputs.Player.Disable();
+            Debug.Log("YOU ARE DEAD");
         }
     }
 }
